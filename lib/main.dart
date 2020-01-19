@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,61 +6,42 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  void playSound(String file) {
+    final player = AudioCache();
+    player.play(file);
+  }
+
+  Expanded buildKey({Color color, int number}) {
+    return Expanded(
+      child: FlatButton(
+        color: color,
+        onPressed: () {
+          playSound('note$number.wav');
+        },
+        child: Text(''),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DicePage(),
-    );
-  }
-}
-
-class DicePage extends StatefulWidget {
-  const DicePage({Key key}) : super(key: key);
-
-  @override
-  _DicePageState createState() => _DicePageState();
-}
-
-class _DicePageState extends State<DicePage> {
-  int leftDiceNumber = 1;
-  int rightDiceNumber = 6;
-
-  void changeDiceNumber(){
-    setState(() {
-      leftDiceNumber = Random().nextInt(6) + 1;
-      rightDiceNumber = Random().nextInt(6) + 1;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.red,
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: Text('Dice'),
-      ),
-      body: Center(
-        child: Row(
+      home: Scaffold(
+        backgroundColor: Colors.black,
+        body: SafeArea(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Expanded(
-              child: FlatButton(
-                child: Image.asset('images/dice$leftDiceNumber.png'),
-                onPressed: () {
-                  changeDiceNumber();
-                },
-              ),
-            ),
-            Expanded(
-              child: FlatButton(
-                child: Image.asset('images/dice$rightDiceNumber.png'),
-                onPressed: () {
-                  changeDiceNumber();
-                },
-              ),
-            ),
+            buildKey(color: Colors.red, number: 1),
+            buildKey(color: Colors.orange, number: 2),
+            buildKey(color: Colors.yellow, number: 3),
+            buildKey(color: Colors.green, number: 4),
+            buildKey(color: Colors.blue, number: 5),
+            buildKey(color: Colors.indigo, number: 6),
+            buildKey(color: Colors.purple, number: 7),
           ],
-        ),
+        )),
       ),
     );
   }
